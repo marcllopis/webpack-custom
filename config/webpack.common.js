@@ -5,10 +5,29 @@ const webpack = require('webpack');
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
+// creates our HTML serving the webpack bundles
+const htmlPlugin = new HtmlWebpackPlugin({
+  title: 'Webpack custom configuration',
+  template: './src/index.html',
+});
+
+/*
+  Hot Module Replacement (HMR) exchanges, adds, or removes modules while an
+  application is running, without a full reload. This can significantly
+  speed up development in a few ways:
+
+  Retain application state which is lost during a full reload. Save valuable
+  development time by only updating what's changed.
+  More info in: https://webpack.js.org/concepts/hot-module-replacement/
+ */
+const hotModulePlugin = new webpack.HotModuleReplacementPlugin({});
+
+const cleanPlugin = new CleanWebpackPlugin(['dist']);
+
 const config = {
   entry: {
-    app: './src/index.js',
-    print: './src/print.js',
+    app: './src/index.jsx',
+    // print: './src/print.jsx',
   },
   output: {
     filename: '[name].bundle.js',
@@ -24,9 +43,9 @@ const config = {
       },
       {
         // process js files with babel loader to use modern javascript
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
+        include: path.resolve(__dirname, '../src'),
         use: {
           loader: 'babel-loader',
           options: {
@@ -53,22 +72,9 @@ const config = {
     ],
   },
   plugins: [
-    // creates our HTML serving the webpack bundles
-    new HtmlWebpackPlugin({
-      title: 'Production',
-    }),
-    /*
-      Hot Module Replacement (HMR) exchanges, adds, or removes modules while an
-      application is running, without a full reload. This can significantly
-      speed up development in a few ways:
-
-      Retain application state which is lost during a full reload. Save valuable
-      development time by only updating what's changed.
-      More info in: https://webpack.js.org/concepts/hot-module-replacement/
-     */
-    new webpack.HotModuleReplacementPlugin({}),
-
-    new CleanWebpackPlugin(['dist']),
+    htmlPlugin,
+    hotModulePlugin,
+    cleanPlugin,
   ],
 };
 

@@ -11,7 +11,7 @@ module.exports = merge(common, {
   devtool: 'cheap-module-eval-source-map',
   devServer: {
     // A directory or URL to server HTML content from
-    contentBase: path.resolve(__dirname, '../dist'),
+    contentBase: path.resolve(__dirname, '../public'),
     // Fallback to /index.html for Single Page Applications
     historyApiFallback: true,
     // inline mode (set to false to disable including client scripts
