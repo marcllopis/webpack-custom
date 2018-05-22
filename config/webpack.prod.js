@@ -6,14 +6,16 @@ const webpack = require('webpack');
 /* relative imports */
 const common = require('./webpack.common.js');
 
+const definePlugin = new webpack.DefinePlugin({
+  'process.env.NODE_ENV': JSON.stringify('production'),
+});
+
+const uglifyPlugin = new UglifyJSPlugin({ sourceMap: true });
+
 module.exports = merge(common, {
   plugins: [
-    new UglifyJSPlugin({
-      sourceMap: true,
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-    }),
+    uglifyPlugin,
+    definePlugin,
   ],
   mode: 'production',
   optimization: {
